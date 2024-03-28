@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CentrobankRF</string>
+    <string name="last_update_time_title">Последнее обновление:</string>
 </resources>

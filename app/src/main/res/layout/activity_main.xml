@@ -6,6 +6,13 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".MainActivity">
 
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/last_update_time"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:elevation="4dp" />
+
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/main_recycler"
     android:layout_width="match_parent"
@@ -16,6 +23,14 @@ tools:context=".MainActivity">
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
+<!--<TextView-->
+<!--    android:id="@+id/last_update_time"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="@string/last_update_time_title"-->
+<!--    android:textSize="16sp"-->
+<!--    android:layout_marginTop="16dp"-->
+<!--    android:layout_marginStart="16dp"/>-->
 
 <ProgressBar
     android:id="@+id/main_progress"

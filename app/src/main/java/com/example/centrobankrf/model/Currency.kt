@@ -1,10 +1,12 @@
 package com.example.centrobankrf.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Currency(
-    val ID: String,
-    val NumCode: String,
-    val CharCode: String,
-    val Nominal: Int,
-    val Name: String,
-    val Value: Double
+    @SerializedName("ID") val id: String,
+    @SerializedName("NumCode") val numCode: String,
+    @SerializedName("CharCode") val charCode: String,
+    @SerializedName("Nominal") val nominal: Int,
+    @SerializedName("Name") val name: String,
+    @SerializedName("Value") val value: Double
 )

@@ -1,5 +1,6 @@
 package com.example.centrobankrf
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -7,6 +8,8 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import android.widget.ProgressBar
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.example.centrobankrf.adapter.CurrencyAdapter
 import com.example.centrobankrf.api.RetrofitClient
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
         runnable = Runnable {
             updateData()
-            handler.postDelayed(runnable, 30000) // 30000 миллисекунд = 30 секунд
+            handler.postDelayed(runnable, 5000) // 30000 миллисекунд = 30 секунд
         }
 
         handler.post(runnable)
@@ -40,31 +43,45 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateData() {
         progressBar.visibility = ProgressBar.VISIBLE
-        RetrofitClient.instance.getCurrencies().enqueue(object : Callback<CurrencyResponse> {
-            override fun onResponse(call: Call<CurrencyResponse>, response: Response<CurrencyResponse>) {
-                progressBar.visibility = ProgressBar.GONE
-                if (response.isSuccessful) {
-                    val currencies = response.body()?.Valute?.values?.toList()
-                    recyclerView.adapter = CurrencyAdapter(currencies ?: emptyList())
-                } else {
-                    Toast.makeText(this@MainActivity, "Ошибка при загрузке данных", Toast.LENGTH_SHORT).show()
+        RetrofitClient.instance.getCurrencies().enqueue(
+            object : Callback<CurrencyResponse> {
+                override fun onResponse(
+                    call: Call<CurrencyResponse>,
+                    response: Response<CurrencyResponse>
+                ) {
+                    progressBar.visibility = ProgressBar.GONE
+                    if (response.isSuccessful) {
+                        val toolbar = findViewById<Toolbar>(R.id.last_update_time)
+                        setSupportActionBar(toolbar)
+                        toolbar.setTitleTextColor(Color.WHITE)
+                        toolbar.title = "Последнее обновление: ${response.body()?.timestamp}"
+
+                        val currencies = response.body()?.valute?.values?.toList()
+                        recyclerView.adapter = CurrencyAdapter(currencies ?: emptyList())
+                    } else {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Ошибка при загрузке данных",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<CurrencyResponse>, t: Throwable) {
+                    progressBar.visibility = ProgressBar.GONE
+                    Toast.makeText(this@MainActivity, "Ошибка сети", Toast.LENGTH_SHORT).show()
                 }
             }
-
-            override fun onFailure(call: Call<CurrencyResponse>, t: Throwable) {
-                progressBar.visibility = ProgressBar.GONE
-                Toast.makeText(this@MainActivity, "Ошибка сети", Toast.LENGTH_SHORT).show()
-            }
-        })
+        )
     }
 
     override fun onPause() {
         super.onPause()
-        handler.removeCallbacks(runnable) // Остановить обновление при свертывании приложения
+        handler.removeCallbacks(runnable)
     }
 
     override fun onResume() {
         super.onResume()
-        handler.post(runnable) // Возобновить обновление при восстановлении приложения
+        handler.post(runnable)
     }
 }
