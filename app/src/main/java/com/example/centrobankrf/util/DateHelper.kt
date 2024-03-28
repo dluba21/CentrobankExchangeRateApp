@@ -5,7 +5,6 @@ import com.example.centrobankrf.R
 
 object DateHelper {
     private const val errorDateTime = "Ошибка: дата и время отсутствуют"
-git
     fun getFormattedDate(date: String): String {
         val formatterInput = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
         val formatterOutput = SimpleDateFormat("dd.MM.yyyy HH:mm:ssXXX")
