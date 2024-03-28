@@ -10,4 +10,7 @@
  - Должна быть корректная обработка ситуаций, когда приложение свернуто
 - Использовать: Kotlin, XML, Android SDK min api 24, Retrofit2, gson
 
+## Скриншот готового приложения:
+![myApp](screenshots/MainScreen.png)
+
 
